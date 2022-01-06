@@ -1,7 +1,6 @@
 .vscode/
 __pycache__/
 .ipynb_checkpoints/
-config.ini
 *.jp2
 *.tiff
 *.tif

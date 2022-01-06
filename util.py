@@ -1,3 +1,4 @@
+from datetime import date 
 
 class Util:
 	def checkQuery(t):

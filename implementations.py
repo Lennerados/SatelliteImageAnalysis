@@ -3,18 +3,29 @@ from xml.etree import ElementTree as ET
 from rasterio.io import MemoryFile
 from pathlib import Path
 
+import os
 import requests
 import configparser
 import json
 import numpy as np
 
+SENTINEL_USERNAME = "SENTINEL_USERNAME"
+SENTINEL_PASSWORD = "SENTINEL_PASSWORD"
+
+# TODO: Move the config loading somewhere else to avoid
+# (maybe into a class that is used as a parameter for each pipeline step)
+# TODO: Remove all magic strings/numbers in that project with "constants"
 c = configparser.ConfigParser()
 c.read("config.ini")
-user = c["DEFAULT"]["username"]
-pw = c["DEFAULT"]["password"]
 savefilename = c["DEFAULT"]["savefilename"]
 querySize = int(c["DEFAULT"]["querysize"])
 maxcloudcoverage = float(c["DEFAULT"]["maxcloudcoverage"])
+if SENTINEL_USERNAME not in os.environ:
+    raise LookupError(f"{SENTINEL_USERNAME} not an environment variable.")
+if SENTINEL_PASSWORD not in os.environ:
+    raise LookupError(f"{SENTINEL_PASSWORD} not an environment variable.")
+user = os.environ[SENTINEL_USERNAME]
+pw = os.environ[SENTINEL_PASSWORD]
 
 savefilelock = Lock()
 
